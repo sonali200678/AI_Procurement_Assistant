@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summarizer - AI Document Summarizer & Analytics Chat</title>
+    <link rel="stylesheet" href="/frontend/css/style.css">
+    <link rel="stylesheet" href="css/style.css"> <!-- Fallback for direct double click -->
+</head>
+<body>
+    <div class="pulse-circle" style="top: 10%; left: 5%;"></div>
+    <div class="pulse-circle" style="top: 60%; right: 5%;"></div>
+
+    <!-- Navigation -->
+    <nav class="landing-nav">
+        <a href="index.html" class="logo">Summarizer</a>
+        <a href="upload.html" class="btn-primary">Launch App</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="landing-hero">
+        <h1>Transform Documents into <br><span>Actionable Insights</span></h1>
+        <p>Instantly parse, summarize, and visualize PDF, Word, Excel, CSV, JSON, and XML documents. Chat interactively with your data using Groq AI.</p>
+        
+        <div style="display: flex; gap: 1rem; justify-content: center;">
+            <a href="upload.html" class="btn-primary">
+                Get Started Free
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+            <a href="#features" class="btn-secondary">Learn More</a>
+        </div>
+
+        <!-- Format Badges -->
+        <div class="format-bar">
+            <span class="format-badge">.PDF</span>
+            <span class="format-badge">.DOCX</span>
+            <span class="format-badge">.CSV</span>
+            <span class="format-badge">.XLSX</span>
+            <span class="format-badge">.JSON</span>
+            <span class="format-badge">.XML</span>
+        </div>
+    </header>
+
+    <!-- Features Grid -->
+    <section id="features" class="features-grid">
+        <div class="feature-card glass-panel">
+            <div class="feature-icon">📝</div>
+            <h3>AI Summary</h3>
+            <p>Get structured markdown reports from documents containing Overview, Key Insights, statistical summaries, and Actionable Recommendations.</p>
+        </div>
+        
+        <div class="feature-card glass-panel">
+            <div class="feature-icon">📊</div>
+            <h3>Data Analytics</h3>
+            <p>Extract statistical descriptions from CSV/Excel tables. Automatically generate trend lines, distributions, and correlation heatmap charts.</p>
+        </div>
+
+        <div class="feature-card glass-panel">
+            <div class="feature-icon">💬</div>
+            <h3>Interactive Chat</h3>
+            <p>Have contextual conversations about your document. Ask complex questions, query specific numbers, or translate sections in real time.</p>
+        </div>
+
+        <div class="feature-card glass-panel">
+            <div class="feature-icon">📥</div>
+            <h3>Export Reports</h3>
+            <p>Download your analysis reports as clean Word (.docx) documents or beautiful print-ready PDF files containing the full summary and charts.</p>
+        </div>
+    </section>
+
+    <footer style="text-align: center; padding: 4rem 1rem; color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid var(--border-card);">
+        <p>&copy; 2026 Summarizerr. Powered by Groq. All rights reserved.</p>
+    </footer>
+</body>
+</html>

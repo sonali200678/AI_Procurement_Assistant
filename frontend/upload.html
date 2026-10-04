@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Summarizerr</title>
+    <link rel="stylesheet" href="/frontend/css/style.css">
+    <link rel="stylesheet" href="/frontend/css/dashboard.css">
+    <!-- Fallback for local folder double click -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        
+        <!-- Sidebar - Upload History -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title">
+                    <a href="index.html" class="logo" style="font-size: 1.4rem;">Summarizerr</a>
+                </div>
+                <!-- Action button to clear selection and show upload zone -->
+                <button id="btn-show-upload" class="btn-primary" style="width: 100%; justify-content: center; padding: 0.6rem 1rem; font-size: 0.9rem;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    Upload Document
+                </button>
+            </div>
+            
+            <div class="history-list" id="history-list">
+                <!-- Loaded dynamically by JS -->
+                <div style="text-align: center; color: var(--text-muted); margin-top: 2rem; font-size: 0.9rem;">
+                    No documents uploaded yet
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="workspace">
+            
+            <!-- Header bar -->
+            <header class="workspace-header">
+                <div class="active-file-title">
+                    <span id="active-filename" style="font-weight: 600; font-size: 1.1rem; color: var(--text-primary);">
+                        No Document Active
+                    </span>
+                    <span id="active-file-badge" class="active-file-badge" style="display: none;">
+                        PDF
+                    </span>
+                </div>
+                
+                <div class="settings-action" style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                    <div class="api-key-input-wrapper">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 0.4rem;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        <input type="password" id="groq-api-key-input" placeholder="Groq API Key...">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Navigation Tabs (Only shown when a file is active) -->
+            <nav class="tabs-nav" id="workspace-tabs" style="display: none;">
+                <button class="tab-btn active" data-tab="tab-summary">
+                    📝 Summary
+                </button>
+                <button class="tab-btn" data-tab="tab-analytics">
+                    📊 Tabular Data & Charts
+                </button>
+                <button class="tab-btn" data-tab="tab-chat">
+                    💬 Ask AI Chat
+                </button>
+            </nav>
+
+            <!-- Workspace Tabs Content -->
+            <div class="tabs-content">
+                
+                <!-- Splash / Upload View -->
+                <div id="view-upload" class="tab-pane active">
+                    <div class="upload-zone-wrapper">
+                        <div class="upload-zone" id="upload-zone">
+                            <div class="upload-icon">📤</div>
+                            <h3>Drag & Drop file to start</h3>
+                            <p>PDF, DOCX, CSV, XLSX, JSON, XML (Max 25MB)</p>
+                            <button class="btn-primary">Browse Files</button>
+                            <input type="file" id="file-input" style="display: none;" accept=".pdf,.docx,.csv,.xlsx,.xls,.json,.xml">
+                            
+                            <!-- Progress loader -->
+                            <div class="progress-container" id="progress-container">
+                                <div class="progress-bar-bg">
+                                    <div class="progress-bar-fill" id="progress-bar-fill"></div>
+                                </div>
+                                <div class="progress-text" id="progress-text">Uploading and parsing...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Summary View -->
+                <div id="tab-summary" class="tab-pane">
+                    <div class="glass-panel" style="padding: 2.5rem; max-width: 900px; margin: 0 auto;">
+                        <div class="export-actions">
+                            <button id="btn-download-pdf" class="btn-primary">
+                                📥 PDF Report
+                            </button>
+                            <button id="btn-download-docx" class="btn-secondary">
+                                📥 Word DOCX
+                            </button>
+                            <button id="btn-regenerate-summary" class="btn-secondary" style="margin-left: auto;">
+                                🔄 Regenerate Summary
+                            </button>
+                        </div>
+                        
+                        <div class="summary-container" id="summary-text-container" style="margin-top: 2rem;">
+                            <!-- Rendered summary markdown goes here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabular Data & Analytics View -->
+                <div id="tab-analytics" class="tab-pane">
+                    <div class="glass-panel" style="padding: 2.5rem; max-width: 1000px; margin: 0 auto;">
+                        <h2 style="margin-bottom: 1.5rem; font-weight: 600;">Dataset Analytics</h2>
+                        
+                        <div id="analytics-error" style="display: none; color: var(--text-secondary); text-align: center; padding: 3rem;">
+                            Analytics are only supported for tabular file formats (CSV, Excel, XML, and flat JSON).
+                        </div>
+                        
+                        <div id="analytics-content">
+                            <!-- Numeric Summary Grid -->
+                            <div class="stats-grid" id="stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-label">Total Rows</div>
+                                    <div class="stat-value" id="stat-rows">0</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-label">Total Columns</div>
+                                    <div class="stat-value" id="stat-cols">0</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-label">Numeric Fields</div>
+                                    <div class="stat-value" id="stat-numeric-count">0</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Columns description table -->
+                            <h3 style="margin-bottom: 1rem; font-weight: 600;">Columns Schema & Data Types</h3>
+                            <table class="stats-table">
+                                <thead>
+                                    <tr>
+                                        <th>Column Name</th>
+                                        <th>Data Type</th>
+                                        <th>Missing Values</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="schema-table-body">
+                                    <!-- Rendered dynamically -->
+                                </tbody>
+                            </table>
+                            
+                            <!-- Generated Charts -->
+                            <h3 style="margin: 2rem 0 1rem 0; font-weight: 600;">Visual Analysis</h3>
+                            <div class="charts-container" id="charts-viewer-container">
+                                <!-- Chart images rendered dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Q&A View -->
+                <div id="tab-chat" class="tab-pane">
+                    <div class="glass-panel chat-workspace" style="max-width: 900px; margin: 0 auto; border-radius: 16px;">
+                        
+                        <!-- Chat Message log -->
+                        <div class="chat-history" id="chat-history-log">
+                            <!-- Messages rendered dynamically -->
+                            <div style="text-align: center; color: var(--text-muted); margin-top: 4rem;">
+                                Start chatting! Ask any question about this document's contents.
+                            </div>
+                        </div>
+                        
+                        <!-- Input field box -->
+                        <div class="chat-input-area">
+                            <div class="chat-input-wrapper">
+                                <input type="text" id="chat-prompt-input" placeholder="Ask AI a question about this document...">
+                            </div>
+                            <button id="btn-send-chat" class="btn-primary" style="padding: 0 2rem;">
+                                Send
+                            </button>
+                        </div>
+                        
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast popup container -->
+    <div id="toast" class="toast success">Success!</div>
+
+    <script src="../js/upload.js"></script>
+</body>
+</html>
