@@ -1,0 +1,331 @@
+# AI-Powered Procurement Assistant
+
+An AI-powered procurement assistant that enables users to interact with procurement and purchase-order data using natural language. The system combines **LLMs, LangGraph, FastAPI, SQL, and enterprise data retrieval** to transform manual procurement analysis into an intelligent conversational workflow.
+
+## 🚀 Overview
+
+Procurement teams often need to search large amounts of purchase-order and vendor data to answer questions such as:
+
+* Which vendor has the highest purchase value?
+* What items were purchased in a particular year?
+* What are the top vendors?
+* Show procurement trends for a specific period.
+* Summarize the available procurement information.
+
+Traditionally, answering these questions requires manually searching Excel files, databases, or reports.
+
+This project provides a conversational interface where users can ask questions in **natural language** and receive relevant, data-driven responses.
+
+### Example
+
+**User:**
+
+> Which vendor has the highest purchase value?
+
+**Assistant:**
+
+> Retrieves the relevant procurement records, processes the result, and generates a concise response using the LLM.
+
+---
+
+## 🏗️ Architecture
+
+```text
+                         ┌─────────────────────┐
+                         │       User          │
+                         │ Natural Language    │
+                         │      Query          │
+                         └──────────┬──────────┘
+                                    │
+                                    ▼
+                         ┌─────────────────────┐
+                         │      FastAPI        │
+                         │    API Layer        │
+                         └──────────┬──────────┘
+                                    │
+                                    ▼
+                         ┌─────────────────────┐
+                         │      LangGraph      │
+                         │ Workflow / Agent    │
+                         │    Orchestration    │
+                         └──────────┬──────────┘
+                                    │
+                         ┌──────────┴──────────┐
+                         ▼                     ▼
+                ┌─────────────────┐   ┌─────────────────┐
+                │ Database / SQL  │   │       LLM       │
+                │ Data Retrieval  │   │ Response Gen.   │
+                └────────┬────────┘   └────────┬────────┘
+                         │                     │
+                         └──────────┬──────────┘
+                                    ▼
+                         ┌─────────────────────┐
+                         │    Final Answer     │
+                         │ + Insights/Charts   │
+                         └─────────────────────┘
+```
+
+---
+
+## ✨ Key Features
+
+### 1. Natural Language Procurement Queries
+
+Users can ask procurement-related questions without directly writing SQL queries.
+
+Examples:
+
+```text
+Which vendor has the highest purchase value?
+
+What are the top 10 vendors?
+
+Show the purchase details for a specific item.
+
+What were the major purchases in 2024?
+
+Give me a summary of procurement activity.
+```
+
+### 2. LangGraph-Based Workflow
+
+The application uses **LangGraph** to orchestrate the processing workflow.
+
+The workflow manages the movement of a user query through the required processing steps before producing the final response.
+
+This provides a structured approach to building an AI-driven workflow instead of relying on a single LLM call.
+
+### 3. Enterprise Data Retrieval
+
+Procurement information is stored in a structured SQL database.
+
+The application retrieves relevant information from the database based on the user's query and uses the retrieved data to generate the response.
+
+### 4. LLM Integration
+
+An LLM is used to understand natural-language requests and generate human-readable responses from the retrieved procurement information.
+
+The system is designed so that the LLM works with retrieved business data rather than relying only on its general knowledge.
+
+### 5. FastAPI Backend
+
+The backend is implemented using **FastAPI**, providing API endpoints for communication between the application and the AI workflow.
+
+FastAPI provides a lightweight and structured interface for integrating the AI workflow with a frontend or other applications.
+
+### 6. Procurement Insights
+
+The system can support procurement analysis such as:
+
+* Vendor analysis
+* Purchase-order information
+* Top vendors
+* Top purchased items
+* Year-wise procurement analysis
+* Data summaries
+* Procurement charts and insights
+
+---
+
+## 🛠️ Technology Stack
+
+| Category         | Technologies                |
+| ---------------- | --------------------------- |
+| Programming      | Python                      |
+| AI / GenAI       | LLMs, Prompt Engineering    |
+| Agent / Workflow | LangGraph                   |
+| Backend          | FastAPI                     |
+| Database         | SQLite / SQL                |
+| Database Access  | SQLAlchemy                  |
+| Data Processing  | Python                      |
+| Visualization    | Charts / Data Visualization |
+| Development      | Git, GitHub, VS Code        |
+
+---
+
+## 🔄 How It Works
+
+### Step 1 — User Query
+
+The user submits a procurement question using natural language.
+
+```text
+Which vendor has the highest purchase value?
+```
+
+### Step 2 — Query Processing
+
+The request is received by the FastAPI backend and passed to the LangGraph workflow.
+
+### Step 3 — Workflow Orchestration
+
+LangGraph manages the processing flow and determines the required operations for the request.
+
+### Step 4 — Data Retrieval
+
+The relevant procurement information is retrieved from the SQL database.
+
+### Step 5 — Response Generation
+
+The retrieved information is provided to the LLM to generate a concise and understandable response.
+
+### Step 6 — Result
+
+The user receives the final answer and, where applicable, supporting procurement insights or visualizations.
+
+---
+
+## 📊 Data
+
+The project works with procurement and purchase-order information containing business-related fields such as:
+
+* Purchase orders
+* Vendors
+* Items
+* Purchase values
+* Dates
+* Buyers
+* Procurement categories
+
+The data is structured and stored in a SQL database to support efficient querying and analysis.
+
+---
+
+## 📁 Project Structure
+
+```text
+AI-Powered-Procurement-Assistant/
+│
+├── app/
+│   ├── api/
+│   ├── graph/
+│   ├── database/
+│   ├── services/
+│   └── ...
+│
+├── data/
+│   └── procurement_data
+│
+├── README.md
+├── requirements.txt
+└── ...
+```
+
+> Update the folder names above to exactly match your actual repository structure.
+
+---
+
+## ▶️ Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone <your-repository-url>
+cd AI-Powered-Procurement-Assistant
+```
+
+### 2. Create a virtual environment
+
+```bash
+python -m venv venv
+```
+
+Activate it on Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+### 3. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Configure environment variables
+
+Create a `.env` file and add the required configuration.
+
+Example:
+
+```env
+LLM_API_KEY=your_api_key
+DATABASE_URL=your_database_url
+```
+
+Do **not** commit API keys or other secrets to GitHub.
+
+### 5. Start the FastAPI application
+
+Use the command that matches your actual entry point. For example:
+
+```bash
+uvicorn main:app --reload
+```
+
+The API will then be available locally.
+
+---
+
+## 🔐 Security
+
+Sensitive information such as API keys and credentials should be stored using environment variables.
+
+The `.env` file should be excluded from version control:
+
+```text
+.env
+```
+
+Add it to `.gitignore` before pushing the project to GitHub.
+
+---
+
+## 🎯 Why I Built This
+
+This project was inspired by the difficulty of manually searching and analyzing procurement data stored across spreadsheets and documents.
+
+The goal was to explore how **Generative AI and agent-based workflows can make enterprise data more accessible** by allowing users to interact with business data using natural language.
+
+Instead of requiring users to understand database structures or SQL queries, the assistant provides a conversational interface for procurement analysis.
+
+---
+
+## 🔮 Future Improvements
+
+Potential improvements include:
+
+* Multi-agent procurement workflows
+* Human-in-the-loop approval for sensitive actions
+* More enterprise data sources
+* MCP-based integrations with external enterprise tools
+* Advanced procurement analytics
+* Role-based access control
+* Improved agent evaluation and observability
+* Deployment using cloud infrastructure
+* Integration with enterprise applications
+
+---
+
+## 👩‍💻 Author
+
+**Sonali D.**
+
+B.Tech — Artificial Intelligence and Machine Learning
+SNS College of Technology
+
+### Technologies
+
+`Python` `LLMs` `LangGraph` `FastAPI` `SQL` `RAG` `Generative AI` `Git`
+
+---
+
+## ⭐ Project Highlights
+
+* Natural-language interaction with procurement data
+* LangGraph-based AI workflow
+* LLM-powered response generation
+* SQL-based enterprise data retrieval
+* FastAPI backend
+* Procurement analytics and insights
+* Designed around a real-world enterprise use case
